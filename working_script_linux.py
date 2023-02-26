@@ -368,28 +368,30 @@ def parserOnePacket(serialPort_DATA):   # function used to parse 1 data packet t
 
 #=======================================================================================================================================================================
 
-def save_data(output_array): 
+def save_data(output_array, iteration): 
     # print("                  x(m)         y(m)         z(m)        v(m/s)    Com0range(m)  azimuth(deg)  elevAngle(deg)  snr(0.1dB)    noise(0.1dB)")
-    header = ["time","x","y","z","v","com","azi","ele","snr","noise"]
+    header = ["timestamp","x","y","z","v","com","azi","ele","snr","noise"]
     df = pd.DataFrame(output_array)
-    df.to_csv('my_csv.csv', index=False, header=header)
+    df.to_csv(f'data/my_csv_{iteration}.csv', index=False, header=header)
     
 # Testing functioning of above defined functions 
 
 file_path = "xwr68xx.cfg"
-port1, port2 = findPorts()
+# port1, port2 = findPorts()
 # print(port1)
 # print(port2)
 start_TI_radar(file_path)
 # time.sleep(10)
-time.sleep(2)
+time.sleep(4)
 serialPort_DATA = start_data_stream_TI_radar()
 print(serialPort_DATA)
-while 1: 
+i = 0 
+iteration = 60 
+while i < iteration: 
     output_TI_radar = parserOnePacket(serialPort_DATA)
     numDetObj, output_array = output_TI_radar
     print(output_array)
-    save_data(output_array)
-
+    save_data(output_array, i)
+    i+=1 
 stop_TI_radar()
 
