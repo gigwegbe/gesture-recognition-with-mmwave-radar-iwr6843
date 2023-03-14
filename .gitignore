@@ -132,3 +132,7 @@ dmypy.json
 # Others
 TIRadarGestures/
 data/
+.vscode/
+foo.csv
+preprocessing.py
+new.py
